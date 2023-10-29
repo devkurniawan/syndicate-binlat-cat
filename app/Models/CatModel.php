@@ -44,8 +44,7 @@ class CatModel extends Model
                                     cat_ujian_siswa.ujiansiswa_id,
                                     cat_ujian_siswa.nilai
                                ")->
-                               join("cat_siswa", "cat_siswa.siswa_id=cat_ujian_siswa.siswa_id", "left")->
-                               where("cat_ujian_siswa.siswa_id", session()->get('siswa')['siswa_id']);
+                               join("cat_siswa", "cat_siswa.siswa_id=cat_ujian_siswa.siswa_id", "left");
 
         return $db->where('cat_ujian_siswa.ujian_id', $ujian_id)->
                     limit($length, $start)->
