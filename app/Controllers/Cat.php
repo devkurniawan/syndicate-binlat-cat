@@ -12,6 +12,7 @@ class Cat extends BaseController
         $_POST['length']    = 1;
         $ujianterbaru   = $CatModel->queryDatatable();
         $ujianterbaru   = isset($ujianterbaru[0]) ? $ujianterbaru[0] : array();
+        $_POST['length']    = 5;
         $ranks          = isset($ujianterbaru->ujian_id) ? $CatModel->getRanks($ujianterbaru->ujian_id) : [];
         return view('template/apps/home', [
             "page"          => "cat/dashboard",
