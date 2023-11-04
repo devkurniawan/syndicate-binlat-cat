@@ -64,15 +64,15 @@ class Cat extends BaseController
         $CatModel       = new \App\Models\CatModel();
         $ujian          = $CatModel->getUjian($ujian_id);
         if(!$ujian) return $HelperModel->setAlert("alertUjian", "error", "Gagal mengakses tes", "cat");
-        $soals          = $CatModel->getSoalUjian($ujian_id);
+        $soals          = $ujian->kategori=="Kecermatan" ? $CatModel->getSoalUjiank($ujian_id) : $CatModel->getSoalUjian($ujian_id);
         $ujiansiswa     = $CatModel->getMyUjianSiswa($ujian_id);
         $sujiansiswa    = $CatModel->getMyUjianSiswa($ujian_id, true);
         return view('template/apps/home', [
-            "page"  => "cat/mulaites",
-            "menu"  => "cat",
-            "ujian" => $ujian,
-            "soals" => $soals,
-            "ujiansiswa" => $ujiansiswa,
+            "page"          => "cat/".($ujian->kategori=="Kecermatan" ? "mulaitesk" : "mulaites"),
+            "menu"          => "cat",
+            "ujian"         => $ujian,
+            "soals"         => $soals,
+            "ujiansiswa"    => $ujiansiswa,
             "sujiansiswa"   => $sujiansiswa
         ]);
     }
@@ -159,6 +159,58 @@ class Cat extends BaseController
         
         if(isset($is_quisdiakhiri) && $is_quisdiakhiri) $result['result'] = $data;
         return $this->response->setJSON($result);
+        
+    }
+
+    public function updateujiansiswak(){
+        extract($_POST);
+
+        // return $this->response->setJSON($_POST);
+
+        $db             = \Config\Database::connect();
+        $HelperModel    = new \App\Models\HelperModel();
+        $CatModel       = new \App\Models\CatModel();
+
+        $ujian          = $CatModel->getUjian($ujian_id);
+        if(!$ujian) return $this->response->setJSON([
+            "status"    => "gagal",
+            "pesan"     => "Gagal mengakses data tes"
+        ]);
+
+        $db->table("cat_ujian_siswa")->where('ujian_id', $ujian_id)->where('siswa_id', session()->get('siswa')['siswa_id'])->delete();
+
+        $nilai = 0;
+        $total_soal = 0;
+        $total_terjawab = 0;
+        foreach($dataSoals as $dataSoal){
+            $total_terjawab += $dataSoal['jumlah_terjawab'];
+            $total_soal += $dataSoal['jumlah_soal'];
+            $_nilai = ($dataSoal['jumlah_benar'] * 100) / $dataSoal['jumlah_soal'];
+            $nilai += $_nilai;
+        }
+        $nilai = $nilai / count($dataSoals);
+        $data = [
+            "ujian_id"          => $ujian->ujian_id,
+            "nama_ujian"        => $ujian->nama_ujian,
+            "siswa_id"          => session()->get('siswa')['siswa_id'],
+            "durasi"            => 0,
+            "waktu_mulai"       => isset($dataSoals[0]['durasiStart']) ? $dataSoals[0]['durasiStart'] : date("Y-m-d H:i:s"),
+            "waktu_selesai"     => date("Y-m-d H:i:s"),
+            "waktu_akhir"       => date("Y-m-d H:i:s"),
+            "nilai"             => $nilai,
+            "jumlah_terjawab"   => $total_terjawab,
+            "jumlah_soal"       => $total_soal,
+            "cache_soal"        => @serialize($dataSoals),
+            "cache_jawaban"     => null,
+            "updated_at"        => date("Y-m-d H:i:s")
+        ];
+        
+        $db->table("cat_ujian_siswa")->insert($data);
+        return $this->response->setJSON([
+            "status"    => "berhasil",
+            "pesan"     => "Hasil Tes Berhasil Disimpan",
+            "result"    => $data
+        ]);
         
     }
 

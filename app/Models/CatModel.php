@@ -119,4 +119,18 @@ class CatModel extends Model
 
         return $soals;
     }
+
+    public function getSoalUjiank($ujian_id){
+        $db     = \Config\Database::connect();
+        $soals  = $db->table("cat_ujian_soal")->
+                        select("
+                            cat_ujian_soal.ujian_id,
+                            banksoal_soalk.*,
+                        ")->
+                        join("banksoal_soalk", "banksoal_soalk.soalk_id=cat_ujian_soal.soalk_id", "left")->
+                        where("cat_ujian_soal.ujian_id", $ujian_id)->
+                        get()->getResult();
+
+        return $soals;
+    }
 }

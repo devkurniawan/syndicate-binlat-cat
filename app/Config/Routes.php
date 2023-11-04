@@ -15,6 +15,7 @@ $routes->group("cat", ["filter" => "Login"], function($routes){
     $routes->get('mulaites/(:num)', 'Cat::mulaites/$1');
     $routes->get('domulaites/(:num)', 'Cat::domulaites/$1');
     $routes->post('updateujiansiswa', 'Cat::updateujiansiswa');
+    $routes->post('updateujiansiswak', 'Cat::updateujiansiswak');
 });
 
 $routes->get('logout', 'Auth::logout');
