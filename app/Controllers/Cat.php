@@ -206,6 +206,8 @@ class Cat extends BaseController
         ];
         
         $db->table("cat_ujian_siswa")->insert($data);
+        $data['nilai']          = is_numeric($data['nilai']) && floor($data['nilai']) != $data['nilai'] ? number_format($data['nilai'], 0) : $data['nilai'];
+
         return $this->response->setJSON([
             "status"    => "berhasil",
             "pesan"     => "Hasil Tes Berhasil Disimpan",
