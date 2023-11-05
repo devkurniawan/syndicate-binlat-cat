@@ -361,6 +361,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
                 
                 if(indexKolom>=(lSoal-1)){
                     $('.bodyPendingCountDown, .bodyWelcome, .bodySoal').hide()
+                    return updateUjianSiswa();
                     return console.log(dataSoals);
                 }
 
