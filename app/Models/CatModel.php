@@ -79,6 +79,15 @@ class CatModel extends Model
                     where("ujian_id", $ujian_id)->get()->getRow();
     }
 
+    public function getAgenda(){
+        $db = \Config\Database::connect();
+        return $db->table("cat_ujian_agenda")->
+                    select("cat_ujian_agenda.*")->
+                    where("cat_ujian_agenda.is_tampil", "Ya")->
+                    orderBy("cat_ujian_agenda.ujianagenda_id", "DESC")->
+                    get()->getRow();
+    }
+
     public function getSoalUjian($ujian_id){
         $db     = \Config\Database::connect();
         $soals  = $db->table("cat_ujian_soal")->

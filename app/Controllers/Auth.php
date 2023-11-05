@@ -47,6 +47,7 @@ class Auth extends BaseController
                         "nomor_hp"      => $user->nomor_hp,
                         "email"         => $user->email,
                         "nik"           => $user->nik,
+                        "foto"          => $user->foto,
                         "login_at"      => time()
                     ]
                 ]);
