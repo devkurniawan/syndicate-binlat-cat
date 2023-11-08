@@ -18,6 +18,11 @@ $routes->group("cat", ["filter" => "Login"], function($routes){
     $routes->post('updateujiansiswak', 'Cat::updateujiansiswak');
 });
 
+$routes->group("profilsaya", ["filter" => "Login"], function($routes){
+    $routes->get('/', 'Auth::profil');
+    $routes->post('/', 'Auth::profil');
+});
+
 $routes->get('logout', 'Auth::logout');
 $routes->group("/", ["filter" => "NoLogin"], function($routes){
     $routes->get('auth', 'Auth::index');

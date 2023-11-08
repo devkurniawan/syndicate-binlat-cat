@@ -17,7 +17,7 @@ defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
 defined('TITLE') || define('TITLE', 'Syndicate Binlat');
 
 defined('resource_url') OR define('resource_url', "http://localhost/syndicate-binlat/resources");
-defined('resource_sysdir') OR define('resource_sysdir', "http://localhost/syndicate-binlat/resources");
+defined('resource_sysdir') OR define('resource_sysdir', FCPATH."../syndicate-binlat/resources");
 function resource_url($subdir=false){
     return resource_url."/".($subdir ? $subdir : null);
 }
