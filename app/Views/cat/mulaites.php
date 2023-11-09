@@ -215,16 +215,19 @@ div:where(.swal2-container) div:where(.swal2-popup) {
                 ?>
                 <div class="mb-5 bodysoal bodySoal<?=$no+1;?>" id="bodysoal<?=$soal->soal_id;?>">
                     <div class="mb-3" style="font-size: 140%">
-                        <div class="mb-4">
+                        <div class="mb-4" style="font-size: 24px">
                             <strong>Soal Nomor <?=$no+1;?></strong>
                         </div>
+                        <?php if($soal->keterangan):?>
+                        <div class="mb-3" style="font-weight: 600"><?=$soal->keterangan;?></div>
+                        <?php endif;?>
                         <?=str_replace(['<p>', '</p>'], '', $soal->soal);?>
                     </div>
                     <div>
                         <div type="A" style="margin-left: 40px;" class="bodyJawaban grid grid-cols-12 gap-4 sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
                             <?php 
                                 $abjads = ["A","B","C","D","E","F","G","H","I","J"];
-                                foreach($soal->jawabans as $key=>$jawaban):
+                                foreach((isset($soal->jawabans) ? $soal->jawabans : []) as $key=>$jawaban):
                                     $checked = isset($jawabans[$soal->soal_id]) && $jawabans[$soal->soal_id]==$jawaban->jawaban_id ? "checked" : null;
                             ?>
                             <div class="childJawaban col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-4">

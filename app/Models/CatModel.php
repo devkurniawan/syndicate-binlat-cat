@@ -93,6 +93,7 @@ class CatModel extends Model
         $soals  = $db->table("cat_ujian_soal")->
                         select("
                             cat_ujian_soal.ujian_id,
+                            cat_ujian_soal.keterangan,
                             banksoal_soal.soal_id,
                             banksoal_soal.soal,
                             banksoal_kategori.nama_kategori,
