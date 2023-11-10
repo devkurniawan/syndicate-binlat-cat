@@ -20,7 +20,7 @@ class CatModel extends Model
                                     cat_ujian_siswa.nilai
                                ")->
                                join("cat_ujian_siswa", "cat_ujian_siswa.ujian_id=cat_ujian.ujian_id AND cat_ujian_siswa.siswa_id='".session()->get('siswa')['siswa_id']."'", "left")->
-                               where("cat_ujian.status", "Dibuka");
+                               where("cat_ujian.status", "Dibuka"); 
 
         if(isset($ujianagenda_id)) $db->where('cat_ujian.ujianagenda_id', $ujianagenda_id);
         if(isset($ujian_id) && $ujian_id) $db->where('cat_ujian.ujian_id', $ujian_id);
