@@ -9,6 +9,10 @@ class CatModel extends Model
     public function queryDatatable($getTotal=false, $all=false){
         extract($_POST);
         $db             = \Config\Database::connect();
+        $CatModel       = new \App\Models\CatModel();
+        $ujianagenda    = $CatModel->getAgenda();
+        $ujianagenda_id = isset($ujianagenda->ujianagenda_id) && $ujianagenda->ujianagenda_id ? $ujianagenda->ujianagenda_id : 0;
+
         $db             = $db->table("cat_ujian")->
                                select("
                                     cat_ujian.*,
@@ -18,6 +22,7 @@ class CatModel extends Model
                                join("cat_ujian_siswa", "cat_ujian_siswa.ujian_id=cat_ujian.ujian_id AND cat_ujian_siswa.siswa_id='".session()->get('siswa')['siswa_id']."'", "left")->
                                where("cat_ujian.status", "Dibuka");
 
+        if(isset($ujianagenda_id) && $ujianagenda_id) $db->where('cat_ujian.ujianagenda_id', $ujianagenda_id);
         if(isset($ujian_id) && $ujian_id) $db->where('cat_ujian.ujian_id', $ujian_id);
 
         if(isset($_POST['search']['value']) && $search['value']){
