@@ -44,7 +44,7 @@ class Cat extends BaseController
             $d[]    = $HelperModel->tanggalwaktu($l->created_at);
             $d[]    = ($l->nilai ? '<div class="mb-2" style="font-size: 16px; font-weight: 600">Nilai Kamu '.$l->nilai.'</div>' :  null).
                             ($l->status=="Dibuka" ? 
-                                ($l->nilai ? '<a href="'.base_url('cat/mulaites/'.$l->ujian_id).'" class="btn border border-primary/30 bg-primary/10 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">ULANGI TES</a>' : '<a href="'.base_url('cat/mulaites/'.$l->ujian_id).'" class="btn border border-success/30 bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">MULAI TES</a>') : null);
+                                ($l->nilai ? ($l->is_ujianulang=="Ya" ? '<a href="'.base_url('cat/mulaites/'.$l->ujian_id).'" class="btn border border-primary/30 bg-primary/10 font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25">ULANGI TES</a>':null) : '<a href="'.base_url('cat/mulaites/'.$l->ujian_id).'" class="btn border border-success/30 bg-success/10 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">MULAI TES</a>') : null);
 
             $data[] = $d;
         }
@@ -67,6 +67,7 @@ class Cat extends BaseController
         $soals          = $ujian->kategori=="Kecermatan" ? $CatModel->getSoalUjiank($ujian_id) : $CatModel->getSoalUjian($ujian_id);
         $ujiansiswa     = $CatModel->getMyUjianSiswa($ujian_id);
         $sujiansiswa    = $CatModel->getMyUjianSiswa($ujian_id, true);
+        if($sujiansiswa && $ujian->is_ujianulang!="Ya") return $HelperModel->setAlert("alertUjian", "error", "Anda sudah melakukan tes tersebut sebelumnya", "cat");
         return view('template/apps/home', [
             "page"          => "cat/".($ujian->kategori=="Kecermatan" ? "mulaitesk" : "mulaites"),
             "menu"          => "cat",
