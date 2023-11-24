@@ -253,12 +253,32 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 
 <script type="text/javascript">
+
     var x = null,
         intervalUpdateTes = null,
         is_start = false,
         jumlah_soal = <?=count($soals);?>,
         current_soal = 1,
-        ujiansiswa_id = false
+        ujiansiswa_id = false,
+        pelanggaran = 1
+
+    const handleVisibilityChange = function() {
+        if(!is_start) return false
+        if (document.visibilityState === 'visible') return false
+        if(pelanggaran<=3) return Swal.fire({
+            title: "Peringatan ke "+(pelanggaran),
+            text: 'Kamu tidak diperbolehkan pindah dari tab/window ujian ini. Jika selanjutnya kamu melakukannya lagi maka ujian kamu akan langsung berakhir.',
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Mengerti'
+        }).then((result) => {
+            pelanggaran = pelanggaran+1
+        })
+        return updateUjianSiswa('#btnAkhiriTes')
+
+    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     function setNavChecked(s_id){
         $(".navQuiz"+s_id).addClass("checked")
