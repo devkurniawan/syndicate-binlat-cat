@@ -12,11 +12,12 @@
                     <p class="mt-2 leading-relaxed">
                         <span class="font-semibold text-navy-700 text-white"><?=$ujianagenda->nama_agenda;?></span> telah dibuka untukmu
                     </p>
-                    <p>Klik tombol dibawah ini untuk memulai <strong><?=$ujianterbaru->nama_ujian;?></strong>, Semoga hasilnya terbaik</p>
-
-                    <a href="<?=base_url('cat/mulaites/'.$ujianterbaru->ujian_id);?>" class="btn mt-6 bg-slate-50 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80">
-                        Mulai Tes Sekarang
-                    </a>
+                    <?php if(isset($ujianterbaru->nama_ujian)):?>
+                        <p>Klik tombol dibawah ini untuk memulai <strong><?=$ujianterbaru->nama_ujian;?></strong>, Semoga hasilnya terbaik</p>
+                        <a href="<?=base_url('cat/mulaites/'.$ujianterbaru->ujian_id);?>" class="btn mt-6 bg-slate-50 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80">
+                            Mulai Tes Sekarang
+                        </a>
+                    <?php endif;?>
                     <?php else:?>
                     <p class="mt-4">di Sistem Aplikasi CAT (Computer Assisted Test) Syndicate Bina Latihan</p>
                     <?php endif;?>
