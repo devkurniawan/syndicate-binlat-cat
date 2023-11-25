@@ -422,6 +422,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
             },
             success: function(res){
                 if(el){
+                    is_start = false
                     destroyPage()
                     $(el).prop('disabled', false).html(lhtml)
                     $('#containerResult').show()
