@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
     <?=view('template/parts/head');?>
     <body x-data class="is-header-blur" x-bind="$store.global.documentBody">
         <!-- App preloader-->
