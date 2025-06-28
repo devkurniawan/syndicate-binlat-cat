@@ -138,7 +138,7 @@ class Cat extends BaseController
                 if($ujiansiswa->perhitungan_nilai=="Bobot"){
                     foreach($s->jawabans ?? [] as $sj){
                         if(isset($jawaban[$s->soal_id]) && $jawaban[$s->soal_id]==$sj->jawaban_id) {
-                            $nilai += $sj->bobot;
+                            $nilai += $sj->bobot ?? 0;
                             break;
                         }
                     }
