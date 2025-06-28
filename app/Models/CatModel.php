@@ -62,7 +62,8 @@ class CatModel extends Model
     public function getUjianSiswa($ujiansiswa_id){
         $db = \Config\Database::connect();
         return $db->table("cat_ujian_siswa")->
-                    select("cat_ujian_siswa.*")->
+                    select("cat_ujian_siswa.*, cat_ujian.perhitungan_nilai")->
+                    join("cat_ujian", "cat_ujian.ujian_id=cat_ujian_siswa.ujian_id", "left")->
                     where("ujiansiswa_id", $ujiansiswa_id)->get()->getRow();
     }
 
@@ -118,7 +119,8 @@ class CatModel extends Model
                                         select("
                                             banksoal_soal_jawaban.jawaban_id,
                                             banksoal_soal_jawaban.soal_id,
-                                            banksoal_soal_jawaban.jawaban
+                                            banksoal_soal_jawaban.jawaban,
+                                            banksoal_soal_jawaban.bobot
                                         ")->
                                         whereIn("banksoal_soal_jawaban.soal_id", $soals_id)->
                                         orderBy("banksoal_soal_jawaban.soal_id", "RANDOM")->

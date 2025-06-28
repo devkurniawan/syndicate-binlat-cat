@@ -35,7 +35,7 @@ class Auth extends BaseController
             'password' => 'required|max_length[50]|min_length[3]',
         ];
         if(
-            $this->request->getMethod()=="post" && 
+            $this->request->getMethod()=="POST" && 
             $validation->withRequest($request)->setRules($rules)->run()
         ){
             extract($validation->getValidated());
@@ -111,7 +111,7 @@ class Auth extends BaseController
         }
 
         if(
-            $this->request->getMethod()=="post" && 
+            $this->request->getMethod()=="POST" && 
             $validation->withRequest($request)->setRules($rules)->run()
         ){
             extract($validation->getValidated());

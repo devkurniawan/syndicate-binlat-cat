@@ -123,20 +123,38 @@ class Cat extends BaseController
             "status"    => "gagal",
             "pesan"     => "Gagal mengakses ujian siswa",
         ]);
+
+        
         
         $soals          = $CatModel->getSoalUjian($ujiansiswa->ujian_id);
 
+        
         if(!isset($jawaban) || !is_array($jawaban)) $jawaban = array();
 
         $jawabans_benar = array();
+        $nilai          = 0;
         if(isset($jawaban) && $jawaban){
             foreach($soals as $s){
-                if(isset($jawaban[$s->soal_id]) && $jawaban[$s->soal_id]==$s->kuncijawaban_id) $jawabans_benar[] = $jawaban[$s->soal_id];
+                if($ujiansiswa->perhitungan_nilai=="Bobot"){
+                    foreach($s->jawabans ?? [] as $sj){
+                        if(isset($jawaban[$s->soal_id]) && $jawaban[$s->soal_id]==$sj->jawaban_id) {
+                            $nilai += $sj->bobot;
+                            break;
+                        }
+                    }
+                }
+                
+                if(isset($jawaban[$s->soal_id]) && $jawaban[$s->soal_id]==$s->kuncijawaban_id) {
+                    $jawabans_benar[] = $jawaban[$s->soal_id];
+                }
             }
         }
+        
+        if($ujiansiswa->perhitungan_nilai=="Rata-rata") $nilai = (count($jawabans_benar) * 100) / count($soals);
+
         $soals = $soals ? $soals : [];
         $data = [
-            "nilai"             => (count($jawabans_benar) * 100) / count($soals),
+            "nilai"             => $nilai,
             "jumlah_terjawab"   => count($jawaban),
             "jumlah_soal"       => count($soals),
             "cache_soal"        => @serialize($soals),
